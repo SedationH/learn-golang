@@ -6,22 +6,31 @@ import (
 	"os"
 )
 
-func ListHandler(rw http.ResponseWriter, r *http.Request) {
-	println(r.URL.Path)
+type userError string
+
+func (u userError) Error() string {
+	return u.Message()
+}
+
+func (u userError) Message() string {
+	return string(u)
+}
+
+func ListHandler(rw http.ResponseWriter, r *http.Request) error {
+	// if !strings.HasPrefix(r.URL.Path, "/list/") {
+	// 	return userError("path must start with /list/")
+	// }
 	path := r.URL.Path[len("/list/"):]
-	println(path)
 	file, err := os.Open(path)
 	if err != nil {
-		println(1, err)
-		http.Error(rw, err.Error(), http.StatusInternalServerError)
-		return
+		return err
 	}
 	defer file.Close()
 
 	all, err := ioutil.ReadAll(file)
 	if err != nil {
-		println(2, err)
-		return
+		return err
 	}
 	rw.Write(all)
+	return nil
 }
