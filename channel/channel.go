@@ -126,8 +126,8 @@ func channelDemo4() {
 
 func main() {
 	// channelDemo()
-	// channelDemo2()
+	channelDemo2()
 	// channelDemo3()
 	// channelBuffer()
-	channelDemo4()
+	// channelDemo4()
 }
